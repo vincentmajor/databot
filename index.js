@@ -7,11 +7,14 @@ var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
   debug: false
+  //include "log: false" to disable logging
+  //or a "logLevel" integer from 0 to 7 to adjust logging verbosity
 })
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
   console.log('Starting in single-team mode')
+  // connect the bot to a stream of messages
   controller.spawn({
     token: token,
     retry: Infinity
@@ -29,29 +32,9 @@ if (token) {
 }
 
 
-//controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
-//  bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
-//})
+// give the bot something to listen for.
+controller.hears('data',['ambient'],function(bot,message) {
 
-var Slack = require('@slack/client');
-var RtmClient = Slack.RtmClient;  
-var RTM_EVENTS = Slack.RTM_EVENTS;
+  bot.reply(message,'Did someone say *data*?');
 
-//var str = "The best things in Data are free";
-//var patt = new RegExp("data", 'i');
-//var res = patt.test(str);
-
-var rtm = new RtmClient(token, { logLevel: 'info' });  
-rtm.start();
-
-rtm.on(RTM_EVENTS.MESSAGE, function(message) {  
-  var channel = message.channel;
-  var text = message.text;
-  var pattern = new RegExp("data", 'i'); //i flag for case insensitive
-  var result = pattern.test(text);
-  // if result == true sendMessage of data
-  if (result == true) {
-      rtm.sendMessage("Did someone say *data*?", channel);
-      //rtm.sendMessage('*bold*', channel);
-  }
 });
