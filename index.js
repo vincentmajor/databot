@@ -37,8 +37,6 @@ var Slack = require('@slack/client');
 var RtmClient = Slack.RtmClient;  
 var RTM_EVENTS = Slack.RTM_EVENTS;
 
-var token = process.env.API_TOKEN;
-
 //var str = "The best things in Data are free";
 //var patt = new RegExp("data", 'i');
 //var res = patt.test(str);
